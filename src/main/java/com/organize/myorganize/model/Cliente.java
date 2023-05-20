@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.UUID;
 
 @SuppressWarnings("ALL")
@@ -17,5 +18,8 @@ public class Cliente implements Serializable {
     private UUID id;
     @OneToOne
     private UserModel userIdCliente;
+
+    private List<Product> productList;
+
 
 }
