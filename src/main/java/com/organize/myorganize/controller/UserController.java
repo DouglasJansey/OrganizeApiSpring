@@ -1,8 +1,8 @@
 package com.organize.myorganize.controller;
 
-import com.organize.myorganize.dtos.RevendedorDtos;
 import com.organize.myorganize.dtos.UserDtos;
 import com.organize.myorganize.model.Cliente;
+import com.organize.myorganize.model.Product;
 import com.organize.myorganize.model.Revendedor;
 import com.organize.myorganize.model.UserModel;
 import com.organize.myorganize.service.ClienteService;
@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 @SuppressWarnings("ALL")
 @RestController
-@RequestMapping("/cadastrar")
+@RequestMapping
 public class UserController {
     @Autowired
     UserService userService;
@@ -29,43 +29,60 @@ public class UserController {
     @Autowired
     ClienteService clienteService;
 
-    @GetMapping
+    @GetMapping("/clientes")
     public ResponseEntity<Object> getAll(){
         List<Cliente> clienteslist = clienteService.findAll();
         return ResponseEntity.status(HttpStatusCode.valueOf(200)).body(clienteslist);
     }
-    @GetMapping("/{phone}")
-    public ResponseEntity<Object> getAll(@RequestParam(value = "tphone") int phone){
-        Optional<UserModel> userModel = userService.findOne(phone);
-        return ResponseEntity.status(HttpStatusCode.valueOf(200)).body(userModel);
+    @GetMapping("/usuario")
+    public ResponseEntity<Object> getAll(@RequestParam String codigo){
+        Optional<Revendedor> revendedora = revendedorService.findByIdRevendedor(codigo);
+        return ResponseEntity.status(HttpStatusCode.valueOf(200)).body(revendedora);
     }
-    @PostMapping
+    @PostMapping("/revendedor")
+    public ResponseEntity<Object> createRevendedora(@RequestBody Revendedor revendedor) {
+
+      Revendedor newRevendedor =  revendedorService.save(revendedor);
+
+        return ResponseEntity.status(HttpStatusCode.valueOf(201)).body(newRevendedor);
+
+    }
+
+    @PostMapping("/cadastrar")
     public ResponseEntity<Object> createUser(@RequestBody UserDtos userDtos) {
         UserModel userResponse = userService.Save(userDtos);
         Revendedor newRevendedor = new Revendedor();
         Cliente cliente = new Cliente();
+        Boolean isRevend = userDtos.getIsRevend();
 
-        if (userDtos.getIsRevend() == true) {
+        if (isRevend == true) {
             List<Cliente> listClient = new ArrayList<>();
 
-            RevendedorDtos revenderDtos = new RevendedorDtos();
             String userID = userResponse.getId().toString();
             String revendID = "REV" + userID.substring(0, 5);
-            revenderDtos.setIdRevendedor(revendID);
-            revenderDtos.setUserid(userResponse);
-            revenderDtos.setClientes(listClient);
-            newRevendedor = revendedorService.save(revenderDtos);
+
+            newRevendedor.setIdRevendedor(revendID);
+            newRevendedor.setUserid(userResponse);
+            newRevendedor.setClientes(listClient);
+            revendedorService.save(newRevendedor);
+            return ResponseEntity.status(HttpStatusCode.valueOf(201)).body(newRevendedor);
+
+        }else{
+            if(userDtos.getCodRevend() != null){
+                List<Product> productList = new ArrayList<>();
+              cliente.setUserIdCliente(userResponse);
+              cliente.setProductList(productList);
+              Cliente responseCliente = clienteService.save(cliente, userDtos.getCodRevend());
+               return ResponseEntity.status(HttpStatusCode.valueOf(201)).body(responseCliente);
+            }
 
         }
-        cliente.setUserIdCliente(userResponse);
 
-        Cliente responseCliente = clienteService.save(cliente);
-        Boolean isRevend = userDtos.getIsRevend();
-        ResponseEntity<Object> response = isRevend == false
-        ? ResponseEntity.status(HttpStatusCode.valueOf(201)).body(userResponse)
-        : ResponseEntity.status(HttpStatusCode.valueOf(201)).body(newRevendedor);
 
-        return response;
+
+
+
+        return ResponseEntity.status(HttpStatusCode.valueOf(401)).body("Não foi possível salvar");
     }
 
 }

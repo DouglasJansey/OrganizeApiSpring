@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 
+@SuppressWarnings("ALL")
 @Service
 public class UserService {
     @Autowired
@@ -21,8 +22,8 @@ public class UserService {
 
         UserModel user = new UserModel();
         BeanUtils.copyProperties(userDtos, user);
-        userRepository.save(user);
-        return user;
+       UserModel userResponse = userRepository.save(user);
+        return userResponse;
     }
 
     public List<UserModel> findAll() {

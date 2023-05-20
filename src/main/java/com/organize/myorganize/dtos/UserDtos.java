@@ -9,4 +9,5 @@ public class UserDtos {
     private String password;
     private int phone;
     private Boolean isRevend;
+    private String codRevend;
 }
