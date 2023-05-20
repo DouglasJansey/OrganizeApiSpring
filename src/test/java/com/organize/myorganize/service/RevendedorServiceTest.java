@@ -1,6 +1,5 @@
 package com.organize.myorganize.service;
 
-import com.organize.myorganize.dtos.RevendedorDtos;
 import com.organize.myorganize.model.Cliente;
 import com.organize.myorganize.model.Revendedor;
 import com.organize.myorganize.model.UserModel;
@@ -58,7 +57,7 @@ public class RevendedorServiceTest {
         List<Cliente> listClient = new ArrayList<>();
         listClient.add(cliente);
 
-        RevendedorDtos revenderDtos = new RevendedorDtos();
+        Revendedor revenderDtos = new Revendedor();
         String userID = user.getId().toString();
         String revendID = "REV_" + userID.substring(0,5);
         revenderDtos.setIdRevendedor(revendID);
