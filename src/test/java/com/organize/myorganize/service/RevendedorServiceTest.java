@@ -72,13 +72,12 @@ public class RevendedorServiceTest {
         newRevender.setUserid(revenderDtos.getUserid());
         newRevender.setClientes(revenderDtos.getClientes());
 
-        revendedorService.save(revenderDtos);
 
-       String value = newRevender.toString();
 
         Mockito.when(revendedorRepository.save(Mockito.any()))
-                .thenReturn(value);
+                .thenReturn(newRevender);
 
+        revendedorService.save(revenderDtos);
 
 
 
