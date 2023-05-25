@@ -17,8 +17,10 @@ public class Cliente implements Serializable {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     @OneToOne
+    @JoinColumn(name = "userId")
     private UserModel userIdCliente;
 
+    @OneToMany
     private List<Product> productList;
 
 
