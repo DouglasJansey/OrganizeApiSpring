@@ -34,6 +34,13 @@ public class UserController {
         List<Cliente> clienteslist = clienteService.findAll();
         return ResponseEntity.status(HttpStatusCode.valueOf(200)).body(clienteslist);
     }
+    @GetMapping("/cliente")
+    public ResponseEntity<Object> getUser(@RequestParam String name){
+        UserModel user = userService.findByName(name);
+        Cliente newCliente = clienteService.findByUserId(user);
+
+        return ResponseEntity.status(HttpStatusCode.valueOf(200)).body(newCliente);
+    }
     @GetMapping("/usuario")
     public ResponseEntity<Object> getAll(@RequestParam String codigo){
         Optional<Revendedor> revendedora = revendedorService.findByIdRevendedor(codigo);
@@ -72,7 +79,7 @@ public class UserController {
                 List<Product> productList = new ArrayList<>();
               cliente.setUserIdCliente(userResponse);
               cliente.setProductList(productList);
-              Cliente responseCliente = clienteService.save(cliente, userDtos.getCodRevend());
+              Cliente responseCliente = clienteService.save(cliente);
                return ResponseEntity.status(HttpStatusCode.valueOf(201)).body(responseCliente);
             }
 

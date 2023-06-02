@@ -11,8 +11,9 @@ import java.util.UUID;
 @SuppressWarnings("ALL")
 @Entity
 @Data
-public class Cliente implements Serializable {
-    private static long serialVersionID = 1L;
+public class Cliente implements Serializable  {
+    static final long serialVersionID = 1L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
@@ -22,6 +23,5 @@ public class Cliente implements Serializable {
 
     @OneToMany
     private List<Product> productList;
-
 
 }

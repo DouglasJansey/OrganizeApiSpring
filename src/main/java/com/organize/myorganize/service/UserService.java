@@ -1,6 +1,7 @@
 package com.organize.myorganize.service;
 
 import com.organize.myorganize.dtos.UserDtos;
+import com.organize.myorganize.model.Cliente;
 import com.organize.myorganize.model.UserModel;
 import com.organize.myorganize.repository.UserRepository;
 import org.springframework.beans.BeanUtils;
@@ -33,6 +34,11 @@ public class UserService {
 
     public Optional<UserModel> findOne(int phone) {
         Optional<UserModel> userModel = userRepository.findByPhone(phone);
+        return userModel;
+    }
+
+    public UserModel findByName(String name) {
+        UserModel userModel = userRepository.findByName(name);
         return userModel;
     }
 }

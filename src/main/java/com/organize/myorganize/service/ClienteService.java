@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+@SuppressWarnings("ALL")
 @Service
 public class ClienteService {
 
@@ -20,13 +21,13 @@ public class ClienteService {
     @Autowired
     private RevendedorRepository revendedorRepository;
 
-    public Cliente save(Cliente cliente, String revendID) {
-        Optional<Revendedor> responseRevendedor = revendedorRepository.findByIdRevendedor(revendID);
+    public Cliente save(Cliente cliente) {
+      //  Optional<Revendedor> responseRevendedor = revendedorRepository.findByIdRevendedor(revendID);
 
         Cliente responseCliente = clienteRepository.save(cliente);
 
-        responseRevendedor.get().getClientes().add(responseCliente);
-        revendedorRepository.save(responseRevendedor.get());
+       // responseRevendedor.get().getClientes().add(responseCliente);
+      // revendedorRepository.save(responseRevendedor.get());
 
        return cliente;
     }
@@ -34,6 +35,11 @@ public class ClienteService {
     public List<Cliente> findAll() {
         List<Cliente> listClient = clienteRepository.findAll();
         return listClient;
+    }
+
+    public Cliente findByUserId(UserModel userCliente) {
+        Cliente cliente = clienteRepository.findByUserIdCliente(userCliente);
+        return cliente;
     }
 
 }

@@ -14,8 +14,8 @@ public class RevendedorService {
     @Autowired
     private RevendedorRepository revendedorRepository;
     public Revendedor save(Revendedor revendedor) {
-        revendedorRepository.save(revendedor);
-        return revendedor;
+       Revendedor newRevendedor =  revendedorRepository.save(revendedor);
+        return newRevendedor;
     }
 
     public Optional<Revendedor> findByIdRevendedor(String codigo) {
